@@ -1,15 +1,16 @@
 import sys
 
-def main(argsBright, argsContrast, argsFile, argsSave):
-    maxx = 0
-    maxy = 0
-    minx = 0
-    miny = 0
-    minz = 0
-    maxz = 0
-    changeInt = argsBright
-    contrastInt = int(argsContrast)
-    contrastFactor = (259 * (contrastInt + 255)) / (255 * (259 - contrastInt))
+def main(argsFile, argsSave):
+    maxx = -100000
+    maxy = -100000
+    maxz = -100000
+    minx = 100000
+    miny = 100000
+    minz = 100000
+    movex = 0
+    movey = 0
+    movez = 0
+
     file = open(argsFile, 'r')
     newfile = open(argsSave, 'w')
     newfile = open(argsSave, 'a')
@@ -32,12 +33,16 @@ def main(argsBright, argsContrast, argsFile, argsSave):
     print(miny, maxy)
     print(minz, maxz)
 
+    movex = round((minx + maxx)/2)
+    movey = round((miny + maxy)/2)
+    movez = round((minz + maxz)/2)
+
     for line in lines:
         if(len(line.split(' ')) > 5):
             linearr = line.split(' ')
-            x = linearr[0]
-            y = linearr[1]
-            z = linearr[2]
+            x = int(linearr[0]) - movex
+            y = int(linearr[1]) - movey
+            z = int(linearr[2]) - movez
             r = linearr[3]
             g = linearr[4]
             b = linearr[5]
@@ -50,4 +55,4 @@ def main(argsBright, argsContrast, argsFile, argsSave):
     newfile.close()
 
 if __name__ == '__main__':
-    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+    main(sys.argv[1], sys.argv[2])
